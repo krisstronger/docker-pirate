@@ -1,5 +1,6 @@
 version: "3.8"
 
+#services, representan los contenedores que se estaran utilizando en la orquestación
 services:
   express_rest_api:
     container_name: my_express_rest_api
@@ -14,6 +15,7 @@ services:
     networks:
       - docker_pirate_net
     restart: on-failure
+    # deploy se usa para ambientes CLOUD, se pude limitar la cantidad de recurso que utilza un contenedor (RAM, CPU, CORE)
     deploy:
       resources:
         limits:
@@ -21,7 +23,7 @@ services:
   mysql_db:
     container_name: my_mysql_db
     image: mysql:latest
-    # Important command to allow legacy authentications for old versions
+    # Comando importante para permitir autenticaciones heredadas para versiones antiguas
     command: --default-authentication-plugin=mysql_native_password
     restart: always
     environment:
