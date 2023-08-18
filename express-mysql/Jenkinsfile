@@ -21,8 +21,6 @@ pipeline {
       REGISTRY = 'ksandoval/docker-pirate-express'
       SONAR_USER = 'admin'
       SONAR_PASS = 'permiso2023'
-      SONAR_HOST_URL = 'mysonarqube'
-      SONAR_HOST_PORT = '9000'
   }
 
   stages {
@@ -69,7 +67,7 @@ pipeline {
                           -Dsonar.projectKey=SimpleExpressExample:Test \
                           -Dsonar.projectName=SimpleExpressExample \
                           -Dsonar.projectVersion=0.0.${BUILD_NUMBER} \
-                          -Dsonar.host.url=http://${SONAR_HOST_URL}:${SONAR_HOST_PORT} \
+                          -Dsonar.host.url=http://mysonarqube:9000 \
                           -Dsonar.sources=./${PROJECT_ROOT}/app.js,./${PROJECT_ROOT}/config/db.config.js,./${PROJECT_ROOT}/routes/developers.js \
                           -Dsonar.login=${SONAR_USER} \
                           -Dsonar.password=${SONAR_PASS} \
