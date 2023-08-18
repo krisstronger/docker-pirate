@@ -15,10 +15,14 @@ pipeline {
   }
 
   environment {
-      // General Variables for Pipeline
+      // Variables globales para el pipeline
       PROJECT_ROOT = 'express-mysql/app'
-      EMAIL_ADDRESS = 'san99tiagodevsecops@gmail.com'
-      REGISTRY = 'san99tiago/docker-pirate-express'
+      EMAIL_ADDRESS = 'kris.sandoval010@gmail.com'
+      REGISTRY = 'ksandoval/docker-pirate-express'
+      SONAR_USER = 'admin'
+      SONAR_PASS = 'permiso2023'
+      SONAR_HOST_URL = 'mysonarqube'
+      SONAR_HOST_PORT = '9000'
   }
 
   stages {
@@ -32,7 +36,7 @@ pipeline {
       stage('Checkout') {
         steps {
         // Get Github repo using Github credentials (previously added to Jenkins credentials)
-        checkout([$class: 'GitSCM', branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/san99tiago/docker-pirate']]])        }
+        checkout([$class: 'GitSCM', branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/krisstronger/docker-pirate']]])        }
       }
       stage('Install dependencies') {
         steps {
@@ -54,7 +58,7 @@ pipeline {
       }
       stage('scan') {
           environment {
-            // Previously defined in the Jenkins "Global Tool Configuration"
+            // Se define a nivel de Jenkins en "Global Tool Configuration"
             scannerHome = tool 'sonar-scanner'
           }
           steps {
@@ -65,10 +69,10 @@ pipeline {
                           -Dsonar.projectKey=SimpleExpressExample:Test \
                           -Dsonar.projectName=SimpleExpressExample \
                           -Dsonar.projectVersion=0.0.${BUILD_NUMBER} \
-                          -Dsonar.host.url=http://mysonarqube:9000 \
+                          -Dsonar.host.url=http://${SONAR_HOST_URL}:${SONAR_HOST_PORT} \
                           -Dsonar.sources=./${PROJECT_ROOT}/app.js,./${PROJECT_ROOT}/config/db.config.js,./${PROJECT_ROOT}/routes/developers.js \
-                          -Dsonar.login=admin \
-                          -Dsonar.password=admin \
+                          -Dsonar.login=${SONAR_USER} \
+                          -Dsonar.password=${SONAR_PASS} \
                           -Dsonar.tests=./${PROJECT_ROOT}/test \
                           -Dsonar.javascript.lcov.reportPaths=./${PROJECT_ROOT}/coverage/lcov.info"
             }
