@@ -74,12 +74,12 @@ pipeline {
                           -Dsonar.javascript.lcov.reportPaths=./${PROJECT_ROOT}/coverage/lcov.info"
             }
            timeout(time: 1, unit: 'HOURS') {
-              waitForQualityGate abortPipeline: true
               def qg = waitForQualityGate() // Corrección: Asignar el resultado de waitForQualityGate() a la variable qg
               if (qg.status != 'OK') {
                 error "Pipeline abortado debido a un fallo en la puerta de calidad: ${qg.status}"
               }
             }
+
             echo 'Quality Gate Passed'
           }
       }
