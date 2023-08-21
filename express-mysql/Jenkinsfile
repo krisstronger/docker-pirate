@@ -73,15 +73,13 @@ pipeline {
                           -Dsonar.tests=./${PROJECT_ROOT}/test \
                           -Dsonar.javascript.lcov.reportPaths=./${PROJECT_ROOT}/coverage/lcov.info"
             }
-            // timeout(time: 3, unit: 'MINUTES') {
-            //   // In case of SonarQube failure or direct timeout exceed, stop Pipeline
-            //   waitForQualityGate abortPipeline: qualityGateValidation(waitForQualityGate())
-            // }
-            timeout(time: 6, unit: 'MINUTES') {
+            timeout(time: 3, unit: 'MINUTES') {
+              // In case of SonarQube failure or direct timeout exceed, stop Pipeline
               def qg = waitForQualityGate()
               if (qg.status != 'OK') {
                   error "Pipeline aborted due to quality gate failure: ${qg.status}"
               }
+              waitForQualityGate abortPipeline: qualityGateValidation(waitForQualityGate())
             }
           }
       }
