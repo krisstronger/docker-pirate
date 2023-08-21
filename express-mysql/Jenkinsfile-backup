@@ -19,15 +19,16 @@ pipeline {
       PROJECT_ROOT = 'express-mysql/app'
       EMAIL_ADDRESS = 'kris.sandoval010@gmail.com'
       REGISTRY = 'ksandoval/docker-pirate-express'
-      SONAR_USER = 'sonar'
-      SONAR_PASS = 'sonar'
+      SONAR_USER = 'admin'
+      SONAR_PASS = 'permiso2023'
   }
 
   stages {
-      stage('DOLAPE') {
+      stage('Hello') {
         steps {
           // First stage is a sample hello-world step to verify correct Jenkins Pipeline
-          echo 'Hello Madafaka!!!'
+          echo 'Hello World, I am Happy'
+          echo 'This is my amazing Pipeline'
         }
       }
       stage('Checkout') {
