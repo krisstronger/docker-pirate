@@ -34,7 +34,7 @@ router.post("/developers/:id_type/:id_value", (req, res) => {
   let idType = req.params.id_type;
   let idValue = req.params.id_value;
 
-  if (isBodyValid(req) == false) {
+  if (!isBodyValid(req)) {
     console.log("Body parameters must have valid values");
     res
       .status(404)
