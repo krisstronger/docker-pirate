@@ -20,7 +20,7 @@ pipeline {
       EMAIL_ADDRESS = 'kris.sandoval010@gmail.com'
       REPO_DOCKER_HUB = 'express-mysql-express_rest_api'
       REGISTRY = 'ksandoval/express-mysql-express_rest_api'
-      REGISTRY_DOCKER_CREDENTIAL = 'dockerhub_id'
+      DOCKERHUB_CREDENTIALS = credentials('dockerhub_id')
       DOCKER_IMAGE = ''
       SONAR_USER = 'admin'
       SONAR_PASS = 'cerveros2023'
@@ -95,35 +95,33 @@ pipeline {
           sh "cd ./${PROJECT_ROOT};docker build -t ${REGISTRY}:${BUILD_NUMBER} . "
         }
       }
-      // stage('Docker Login') {
-      //       steps {
-      //         sh 'echo $REGISTRY_DOCKER_CREDENTIAL | docker login -u $REGISTRY_DOCKER_CREDENTIAL --password-stdin'
-      //       }
-      // }
-      // stage('Docker Push ') {
-      //       steps {
-      //         sh "docker push ${REGISTRY}:${BUILD_NUMBER}"
-      //       }
-      // }
+      stage('Docker Login') {
+          steps {
+            sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+          }
+      }
+      stage('Docker Push ') {
+            steps {
+              sh "docker push ${REGISTRY}:${BUILD_NUMBER}"
+            }
+      }
         
 
-      stage('Deploy docker-image') {
-        steps {
-          // If the Dockerhub authentication stopped, do it again
-          script {
-              DOCKER_IMAGE = docker.build REGISTRY + ":$BUILD_NUMBER"
-              docker.withRegistry( '', REGISTRY_DOCKER_CREDENTIAL ) {
-              DOCKER_IMAGE.push()
-            }
-          }
-          // sh "docker tag ${REPO_DOCKER_HUB} ${REGISTRY}:${BUILD_NUMBER}"
-          // sh "echo $BUILD_NUMBER"
-          // sh "docker push ${REGISTRY}:${BUILD_NUMBER}"
-        }
-      }
+      // stage('Deploy docker-image') {
+      //   steps {
+      //     // If the Dockerhub authentication stopped, do it again
+      //     script {
+      //         DOCKER_IMAGE = docker.build REGISTRY + ":$BUILD_NUMBER"
+      //         docker.withRegistry( '', REGISTRY_DOCKER_CREDENTIAL ) {
+      //         DOCKER_IMAGE.push()
+      //       }
+      //     }
+      //     // sh "docker tag ${REPO_DOCKER_HUB} ${REGISTRY}:${BUILD_NUMBER}"
+      //     // sh "echo $BUILD_NUMBER"
+      //     // sh "docker push ${REGISTRY}:${BUILD_NUMBER}"
+      //   }
+      // }
 
-
-      //cleaning
       stage('Remove Unused docker image') {
         steps{
           sh "docker rmi $REGISTRY:$BUILD_NUMBER"
