@@ -19,7 +19,7 @@ pipeline {
       PROJECT_ROOT = 'express-mysql/app'
       EMAIL_ADDRESS = 'kris.sandoval010@gmail.com'
       REGISTRY = 'ksandoval/docker-pirate-express'
-      SONAR_USER = 'cerveros'
+      SONAR_USER = 'admin'
       SONAR_PASS = 'cerveros2023'
   }
 
