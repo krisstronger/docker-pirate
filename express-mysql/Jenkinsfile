@@ -19,8 +19,8 @@ pipeline {
       PROJECT_ROOT = 'express-mysql/app'
       EMAIL_ADDRESS = 'kris.sandoval010@gmail.com'
       REGISTRY = 'ksandoval/docker-pirate-express'
-      SONAR_USER = 'admin'
-      SONAR_PASS = 'permiso2023'
+      SONAR_USER = 'cerveros'
+      SONAR_PASS = 'cerveros2023'
   }
 
   stages {
@@ -66,7 +66,7 @@ pipeline {
                           -Dsonar.projectKey=SimpleExpressExample:Test \
                           -Dsonar.projectName=SimpleExpressExample \
                           -Dsonar.projectVersion=0.0.${BUILD_NUMBER} \
-                          -Dsonar.host.url=http://mysonarqube:9000 \
+                          -Dsonar.host.url=http://ec2-54-161-106-118.compute-1.amazonaws.com:9000 \
                           -Dsonar.sources=./${PROJECT_ROOT}/app.js,./${PROJECT_ROOT}/config/db.config.js,./${PROJECT_ROOT}/routes/developers.js \
                           -Dsonar.login=${SONAR_USER} \
                           -Dsonar.password=${SONAR_PASS} \
