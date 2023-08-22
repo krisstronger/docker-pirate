@@ -88,11 +88,11 @@ pipeline {
                 }
             }
       }
-      stage('Tag docker-image') {
-        steps {
-          sh "cd ./${PROJECT_ROOT};docker tag ${REPO_DOCKER_HUB} ${REGISTRY}:${BUILD_NUMBER}"
-        }
-      }
+      // stage('Tag docker-image') {
+      //   steps {
+      //     sh "cd ./${PROJECT_ROOT};docker tag ${REPO_DOCKER_HUB} ${REGISTRY}:${BUILD_NUMBER}"
+      //   }
+      // }
       stage('Build docker-image') {
         steps {
           sh "cd ./${PROJECT_ROOT};docker build -t ${REGISTRY}:${BUILD_NUMBER} . "
