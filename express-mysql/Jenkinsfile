@@ -25,12 +25,7 @@ pipeline {
   }
 
   stages {
-      stage('DOLAPE') {
-        steps {
-          // First stage is a sample hello-world step to verify correct Jenkins Pipeline
-          echo 'Hello Madafaka!!!'
-        }
-      }
+      
       stage('Checkout') {
         steps {
         // Get Github repo using Github credentials (previously added to Jenkins credentials)
@@ -93,7 +88,7 @@ pipeline {
                 }
             }
       }
-       stage('TAG docker-image') {
+      stage('TAG docker-image') {
         steps {
           sh "cd ./${PROJECT_ROOT}; docker tag ${REPO_DOCKER_HUB} ${REGISTRY}:${BUILD_NUMBER}"
         }
