@@ -90,15 +90,16 @@ pipeline {
                 }
             }
       }
-      // stage('Tag docker-image') {
-      //   steps {
-      //     sh "cd ./${PROJECT_ROOT};docker tag ${REPO_DOCKER_HUB} ${REGISTRY}:${BUILD_NUMBER}"
-      //   }
-      // }
       stage('Build docker-image') {
         steps {
           sh "cd ./${PROJECT_ROOT};docker build -t ${REGISTRY}:${BUILD_NUMBER} . "
-          dockerImage = docker.build + ":$REGISTRY" + ":$BUILD_NUMBER"
+        }
+      }
+      stage('Set docker_image'){
+        steps {
+          script {
+            dockerImage = docker.build + ":$REGISTRY" + ":$BUILD_NUMBER"
+           }
         }
       }
       stage('Deploy docker-image') {
@@ -110,7 +111,7 @@ pipeline {
             }
           }
 
-          sh "docker push ${REGISTRY}:${BUILD_NUMBER}"
+         // sh "docker push ${REGISTRY}:${BUILD_NUMBER}"
         }
       }
       //cleaning
