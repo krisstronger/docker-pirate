@@ -80,13 +80,6 @@ pipeline {
                     if (qg.status != "OK") {
                         error "Pipeline abortado debido a un fallo en la puerta de calidad: ${qg.status}"
                     }
-                  
-                  // timeout(time: 5, unit: 'MINUTES') {
-                  //   def qg = waitForQualityGate()
-                  //   if (qg.status != 'OK') {
-                  //       error "Pipeline abortado debido a un fallo en la puerta de calidad: ${qg.status}"
-                  //   }
-                  // }
                 }
             }
       }
@@ -105,23 +98,6 @@ pipeline {
               sh "docker push ${REGISTRY}:${BUILD_NUMBER}"
             }
       }
-        
-
-      // stage('Deploy docker-image') {
-      //   steps {
-      //     // If the Dockerhub authentication stopped, do it again
-      //     script {
-      //         DOCKER_IMAGE = docker.build REGISTRY + ":$BUILD_NUMBER"
-      //         docker.withRegistry( '', REGISTRY_DOCKER_CREDENTIAL ) {
-      //         DOCKER_IMAGE.push()
-      //       }
-      //     }
-      //     // sh "docker tag ${REPO_DOCKER_HUB} ${REGISTRY}:${BUILD_NUMBER}"
-      //     // sh "echo $BUILD_NUMBER"
-      //     // sh "docker push ${REGISTRY}:${BUILD_NUMBER}"
-      //   }
-      // }
-
       stage('Remove Unused docker image') {
         steps{
           sh "docker rmi $REGISTRY:$BUILD_NUMBER"
