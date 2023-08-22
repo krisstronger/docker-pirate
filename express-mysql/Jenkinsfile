@@ -106,7 +106,7 @@ pipeline {
         steps {
           // If the Dockerhub authentication stopped, do it again
           script {
-              docker.withRegistry( '', registryCredential ) {
+              docker.withRegistry( '', REGISTRY_DOCKER_CREDENTIAL ) {
               DOCKER_IMAGE.push()
             }
           }
