@@ -104,6 +104,7 @@ pipeline {
             }
           }
           sh "docker tag ${REPO_DOCKER_HUB} ${REGISTRY}:${BUILD_NUMBER}"
+          sh "echo ${BUILD_NUMBER}"
           sh "docker push ${REGISTRY}:${BUILD_NUMBER}"
         }
       }
@@ -113,8 +114,6 @@ pipeline {
           sh "docker rmi $REGISTRY:$BUILD_NUMBER"
         }
       }
-
-
 
   }
 }
