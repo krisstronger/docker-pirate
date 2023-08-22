@@ -93,9 +93,6 @@ pipeline {
       stage('Docker Build') {
         steps {
           sh "cd ./${PROJECT_ROOT};docker build -t ${REGISTRY}:${BUILD_NUMBER} . "
-          script {
-            DOCKER_IMAGE = docker.build REGISTRY + ":$BUILD_NUMBER"
-          }
         }
       }
       // stage('Docker Login') {
@@ -114,6 +111,7 @@ pipeline {
         steps {
           // If the Dockerhub authentication stopped, do it again
           script {
+              DOCKER_IMAGE = docker.build REGISTRY + ":$BUILD_NUMBER"
               docker.withRegistry( '', REGISTRY_DOCKER_CREDENTIAL ) {
               DOCKER_IMAGE.push()
             }
