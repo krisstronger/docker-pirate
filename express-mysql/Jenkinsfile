@@ -95,22 +95,22 @@ pipeline {
           sh "cd ./${PROJECT_ROOT};docker build -t ${REGISTRY}:${BUILD_NUMBER} . "
         }
       }
-      stage('Set docker_image'){
-        steps {
-          script {
-            DOCKER_IMAGE = docker.build + ":$REGISTRY" + ":$BUILD_NUMBER"
-           }
-        }
-      }
+      // stage('Set docker_image'){
+      //   steps {
+      //     script {
+      //       DOCKER_IMAGE = docker.build + ":$REGISTRY" + ":$BUILD_NUMBER"
+      //      }
+      //   }
+      // }
       stage('Deploy docker-image') {
         steps {
           // If the Dockerhub authentication stopped, do it again
           script {
               docker.withRegistry( '', REGISTRY_DOCKER_CREDENTIAL ) {
-              DOCKER_IMAGE.push()
+              //DOCKER_IMAGE.push()
             }
           }
-
+          sh "docker push ${REGISTRY}:${BUILD_NUMBER}"
          // sh "docker push ${REGISTRY}:${BUILD_NUMBER}"
         }
       }
