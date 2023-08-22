@@ -98,7 +98,7 @@ pipeline {
       stage('Set docker_image'){
         steps {
           script {
-            dockerImage = docker.build + ":$REGISTRY" + ":$BUILD_NUMBER"
+            DOCKER_IMAGE = docker.build + ":$REGISTRY" + ":$BUILD_NUMBER"
            }
         }
       }
@@ -107,7 +107,7 @@ pipeline {
           // If the Dockerhub authentication stopped, do it again
           script {
               docker.withRegistry( '', registryCredential ) {
-              dockerImage.push()
+              DOCKER_IMAGE.push()
             }
           }
 
