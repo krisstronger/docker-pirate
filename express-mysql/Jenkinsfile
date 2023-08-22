@@ -18,7 +18,8 @@ pipeline {
       // Variables globales para el pipeline
       PROJECT_ROOT = 'express-mysql/app'
       EMAIL_ADDRESS = 'kris.sandoval010@gmail.com'
-      REGISTRY = 'ksandoval/docker-pirate-express'
+      REPO_DOCKER_HUB = 'express-mysql-express_rest_api'
+      REGISTRY = 'ksandoval/express-mysql-express_rest_api'
       SONAR_USER = 'admin'
       SONAR_PASS = 'cerveros2023'
   }
@@ -91,6 +92,11 @@ pipeline {
                   // }
                 }
             }
+      }
+       stage('TAG docker-image') {
+        steps {
+          sh "cd ./${PROJECT_ROOT}; docker tag ${REPO_DOCKER_HUB} ${REGISTRY}:${BUILD_NUMBER}"
+        }
       }
       stage('Build docker-image') {
         steps {
