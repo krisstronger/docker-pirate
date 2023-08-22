@@ -93,33 +93,36 @@ pipeline {
       stage('Docker Build') {
         steps {
           sh "cd ./${PROJECT_ROOT};docker build -t ${REGISTRY}:${BUILD_NUMBER} . "
+          script {
+            DOCKER_IMAGE = docker.build REGISTRY + ":$BUILD_NUMBER"
+          }
         }
       }
-      stage('Docker Login') {
-            steps {
-              sh 'echo $REGISTRY_DOCKER_CREDENTIAL | docker login -u $REGISTRY_DOCKER_CREDENTIAL --password-stdin'
-            }
-          }
-      stage('Docker Push ') {
-            steps {
-              sh "docker push ${REGISTRY}:${BUILD_NUMBER}"
-            }
-          }
+      // stage('Docker Login') {
+      //       steps {
+      //         sh 'echo $REGISTRY_DOCKER_CREDENTIAL | docker login -u $REGISTRY_DOCKER_CREDENTIAL --password-stdin'
+      //       }
+      // }
+      // stage('Docker Push ') {
+      //       steps {
+      //         sh "docker push ${REGISTRY}:${BUILD_NUMBER}"
+      //       }
+      // }
         
 
-      // stage('Deploy docker-image') {
-      //   steps {
-      //     // If the Dockerhub authentication stopped, do it again
-      //     script {
-      //         docker.withRegistry( '', REGISTRY_DOCKER_CREDENTIAL ) {
-      //         //DOCKER_IMAGE.push()
-      //       }
-      //     }
-      //     sh "docker tag ${REPO_DOCKER_HUB} ${REGISTRY}:${BUILD_NUMBER}"
-      //     sh "echo $BUILD_NUMBER"
-      //     sh "docker push ${REGISTRY}:${BUILD_NUMBER}"
-      //   }
-      // }
+      stage('Deploy docker-image') {
+        steps {
+          // If the Dockerhub authentication stopped, do it again
+          script {
+              docker.withRegistry( '', REGISTRY_DOCKER_CREDENTIAL ) {
+              DOCKER_IMAGE.push()
+            }
+          }
+          // sh "docker tag ${REPO_DOCKER_HUB} ${REGISTRY}:${BUILD_NUMBER}"
+          // sh "echo $BUILD_NUMBER"
+          // sh "docker push ${REGISTRY}:${BUILD_NUMBER}"
+        }
+      }
 
 
       //cleaning
