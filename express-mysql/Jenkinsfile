@@ -20,6 +20,8 @@ pipeline {
       EMAIL_ADDRESS = 'kris.sandoval010@gmail.com'
       REPO_DOCKER_HUB = 'express-mysql-express_rest_api'
       REGISTRY = 'ksandoval/express-mysql-express_rest_api'
+      REGISTRY_DOCKER_CREDENTIAL = 'dockerhub_id'
+      DOCKER_IMAGE = ''
       SONAR_USER = 'admin'
       SONAR_PASS = 'cerveros2023'
   }
@@ -96,14 +98,29 @@ pipeline {
       stage('Build docker-image') {
         steps {
           sh "cd ./${PROJECT_ROOT};docker build -t ${REGISTRY}:${BUILD_NUMBER} . "
+          dockerImage = docker.build + ":$REGISTRY" + ":$BUILD_NUMBER"
         }
       }
       stage('Deploy docker-image') {
         steps {
           // If the Dockerhub authentication stopped, do it again
-          sh 'docker login'
+          script {
+              docker.withRegistry( '', registryCredential ) {
+              dockerImage.push()
+            }
+          }
+
           sh "docker push ${REGISTRY}:${BUILD_NUMBER}"
         }
       }
+      //cleaning
+      stage('Cleaning up') {
+        steps{
+          sh "docker rmi $REGISTRY:$BUILD_NUMBER"
+        }
+      }
+
+
+
   }
 }
