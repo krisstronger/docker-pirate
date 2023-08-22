@@ -53,9 +53,8 @@ pipeline {
           sh "cd ${PROJECT_ROOT}; npm run coverage"
         }
       } 
-      stages{
         //stage 1
-        stage('Scan and Analysis') {
+      stage('Scan and Analysis') {
             steps {
                 script {
                     def scannerHome = tool 'sonar-scanner'
@@ -73,9 +72,9 @@ pipeline {
                     }
                 }
             }
-        }
+      }
         //stage 2
-        stage('Quality Gate Check') {
+      stage('Quality Gate Check') {
             steps {
                 script {
                     def qg = waitForQualityGate()
@@ -84,8 +83,8 @@ pipeline {
                     }
                 }
             }
-        }
       }
+      
       // stage('scan') {
       //     environment {
       //       // Se define a nivel de Jenkins en "Global Tool Configuration"
@@ -112,9 +111,6 @@ pipeline {
       //       }
       //     }
       // }
-
-
-
       stage('Build docker-image') {
         steps {
           sh "cd ./${PROJECT_ROOT};docker build -t ${REGISTRY}:${BUILD_NUMBER} . "
