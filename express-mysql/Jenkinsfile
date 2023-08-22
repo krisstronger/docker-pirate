@@ -21,7 +21,7 @@ pipeline {
       REPO_DOCKER_HUB = 'express-mysql-express_rest_api'
       REGISTRY = 'ksandoval/express-mysql-express_rest_api'
       SONAR_USER = 'admin'
-      SONAR_PASS = 'permiso2023'
+      SONAR_PASS = 'cerveros2023'
   }
 
   stages {
@@ -59,7 +59,7 @@ pipeline {
                           -Dsonar.projectKey=SimpleExpressExample:Test \
                           -Dsonar.projectName=SimpleExpressExample \
                           -Dsonar.projectVersion=0.0.${BUILD_NUMBER} \
-                          -Dsonar.host.url=http://mysonarqube:9000 \
+                          -Dsonar.host.url=http://ec2-54-161-106-118.compute-1.amazonaws.com:9000 \
                           -Dsonar.sources=./${PROJECT_ROOT}/app.js,./${PROJECT_ROOT}/config/db.config.js,./${PROJECT_ROOT}/routes/developers.js \
                           -Dsonar.login=${SONAR_USER} \
                           -Dsonar.password=${SONAR_PASS} \
@@ -88,9 +88,9 @@ pipeline {
                 }
             }
       }
-      stage('TAG docker-image') {
+      stage('Tag docker-image') {
         steps {
-          sh "cd ./${PROJECT_ROOT}; docker tag ${REPO_DOCKER_HUB} ${REGISTRY}:${BUILD_NUMBER}"
+          sh "cd ./${PROJECT_ROOT};docker tag ${REPO_DOCKER_HUB} ${REGISTRY}:${BUILD_NUMBER}"
         }
       }
       stage('Build docker-image') {
